@@ -1,0 +1,9 @@
+transmission:
+    host: "e.g. 127.0.0.1"
+    port: ""
+    path: "e.g. transmission"
+    username: ""
+    password: ""
+    remove_older_than: 20  # Remove torrents older than this amount of days.
+    remove_seeded: 3  # Remove torrents with ratio bigger than this.
+    remove_from_disk: 'true'  # Remove said torrent's data from disk.
