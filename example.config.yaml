@@ -7,3 +7,8 @@ transmission:
     remove_older_than: 20  # Remove torrents older than this amount of days.
     remove_seeded: 3  # Remove torrents with ratio bigger than this.
     remove_from_disk: 'true'  # Remove said torrent's data from disk.
+
+pushbullet:
+    access_token: "" # Place pushbullet access token here.
+    identities:
+            - "" # List devices you want the push to be forwarded to here.
