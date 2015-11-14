@@ -1,3 +1,8 @@
+pushbullet:
+    access_token: "" # Place pushbullet access token here.
+    devices:
+            -  # List devices you want the push to be forwarded to here.
+
 transmission:
     host: "localhost"
     port: "9091"
@@ -8,7 +13,3 @@ transmission:
     remove_seeded: 3  # Remove torrents with ratio bigger than this.
     remove_from_disk: 'true'  # Remove said torrent's data from disk.
 
-pushbullet:
-    access_token: "" # Place pushbullet access token here.
-    devices:
-            - "" # List devices you want the push to be forwarded to here.
