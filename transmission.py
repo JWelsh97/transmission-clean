@@ -2,29 +2,18 @@ import requests
 import json
 from requests.auth import HTTPBasicAuth
 
-host = "host_here"
-port = "port_here"
-path = "transmission"
 
-username = "username_here"
-password = "password_here"
-
-url = "http://{0}:{1}/{2}/rpc".format(host, port, path)
-
-remove_older_than = 20  # Remove torrents older than this amount of days.
-remove_seeded = 3  # Remove torrents with ratio bigger than this.
-remove_from_disk = 'true'  # Remove said torrent's data from disk.
-
-
-def make_request(jsondata):
+def make_request(conf, jsondata):
     """
     Makes a request to the transmission API. Requires the above
     configuration to be set. First logs in, then sets the session id and
     finally makes the request and returns the data as json.
     """
+    conf = conf["transmission"]
     session_id = {}
+    url = "http://{0}:{1}/{2}/rpc".format(conf["host"], conf["port"], conf["path"])
     # Get the initial X-Transmission-Session-Id
-    response = requests.get(url, auth=HTTPBasicAuth(username, password))
+    response = requests.get(url, auth=HTTPBasicAuth(conf["username"], conf["password"]))
     # Check for failure.
     if response.status_code == 401:
         raise Exception("Not a valid username!")
@@ -33,11 +22,12 @@ def make_request(jsondata):
     response = requests.post(url,
                              data=json.dumps(jsondata),
                              headers=session_id,
-                             auth=HTTPBasicAuth(username, password))
+                             auth=HTTPBasicAuth(conf["username"], conf["password"]))
+
     return json.loads(response.text)
 
 
-def get_torrentlist():
+def get_torrentlist(conf):
     """
     Uses make_request to request a list of all the torrents
     active. Returns a list of json objects.
@@ -45,33 +35,35 @@ def get_torrentlist():
     jsondata = {'arguments':
                 {'fields': ['id', 'name', 'secondsSeeding', 'uploadRatio']},
                 'method': 'torrent-get'}
-    return make_request(jsondata)['arguments']['torrents']
+    return make_request(conf, jsondata)['arguments']['torrents']
 
 
-def remove_torrent(torrent):
+def remove_torrent(conf, torrent):
     """
     Removes a torrent from transmission. Also removes the data from disk!
     """
-    jsondata = {'arguments': {'ids': [torrent['id']], 'delete-local-data': remove_from_disk},
+    jsondata = {'arguments': {'ids': [torrent['id']], 'delete-local-data': conf["transmission"]["remove_from_disk"]},
                 'method': 'torrent-remove'}
-    make_request(jsondata)
+    make_request(conf, jsondata)
 
 
-def old_torrent(torrent):
+def old_torrent(conf, torrent):
     """
     Determines if a torrent is old according to settings above.
     """
+    conf = conf["transmission"]
     age_epoch = int(torrent['secondsSeeding'])
     daysSeeding = age_epoch / 84600
-    return daysSeeding > remove_older_than
+    return daysSeeding > conf["remove_older_than"]
 
 
-def seeded_torrent(torrent):
+def seeded_torrent(conf, torrent):
     """
     Determines if a torrent is seeded plenty, according to settings above.
     """
+    conf = conf["transmission"]
     ratio = float(torrent['uploadRatio'])
-    return ratio > remove_seeded
+    return ratio > conf["remove_seeded"]
 
 
 def print_torrent(torrent):
