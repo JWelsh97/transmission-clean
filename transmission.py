@@ -23,7 +23,6 @@ def make_request(conf, jsondata):
                              data=json.dumps(jsondata),
                              headers=session_id,
                              auth=HTTPBasicAuth(conf["username"], conf["password"]))
-
     return json.loads(response.text)
 
 
