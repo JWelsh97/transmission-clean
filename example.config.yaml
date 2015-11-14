@@ -1,4 +1,5 @@
 pushbullet:
+    enabled: True/False # If you want to use pushbullet enter True.
     access_token: "" # Place pushbullet access token here.
     devices:
             -  # List devices you want the push to be forwarded to here.
