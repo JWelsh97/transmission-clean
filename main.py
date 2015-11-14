@@ -57,9 +57,10 @@ elif '-c' in sys.argv or '--clean' in sys.argv:
                                tr.get_torrentlist())
 
     # Send a push for each torrent to be remove
-    map(lambda t: pb.push_note('Torrent Removed',
-                               "Torrent '{0}' was removed at {1}".format(t['name'], dt_time),
-                               devices), complete_torrents)
+    if conf["pushbullet"]["enabled"]:
+        map(lambda t: pb.push_note('Torrent Removed',
+                                   "Torrent '{0}' was removed at {1}".format(t['name'], dt_time),
+                                   devices), complete_torrents)
 
     # Remove and print torrents
     map(lambda t: tr.remove_torrent(tr.print_torrent(t)), complete_torrents)
