@@ -1,7 +1,7 @@
 transmission:
-    host: "e.g. 127.0.0.1"
-    port: ""
-    path: "e.g. transmission"
+    host: "localhost"
+    port: "9091"
+    path: "transmission"
     username: ""
     password: ""
     remove_older_than: 20  # Remove torrents older than this amount of days.
@@ -10,5 +10,5 @@ transmission:
 
 pushbullet:
     access_token: "" # Place pushbullet access token here.
-    identities:
+    devices:
             - "" # List devices you want the push to be forwarded to here.
