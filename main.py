@@ -13,11 +13,12 @@ def read_config():
         conf = yaml.load(f)
     return conf
 
+conf = read_config()
 
 if '-print' in sys.argv:
-    map(transmission.print_torrent, transmission.get_torrentlist())
+    map(transmission.print_torrent, transmission.get_torrentlist(conf))
 elif '-clean' in sys.argv:
     map(lambda t: transmission.remove_torrent(transmission.print_torrent(t)),
-        filter(lambda t: transmission.old_torrent(t) or
-        transmission.seeded_torrent(t), transmission.get_torrentlist()))
+        filter(lambda t: transmission.old_torrent(conf, t) or
+        transmission.seeded_torrent(conf, t), transmission.get_torrentlist(conf)))
 
