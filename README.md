@@ -9,11 +9,23 @@ Rename example.config.yaml to config.yaml. Fill out all of the fields.
 `pip install pyyaml`
 
 ## Usage ##
-`python main.py -l/--list-devices` Prints "[device_id] device_name: device_identity".  
+`python main.py args`
 
-`python main.py -a/--add-device <device_id>` Adds the selected device_id (found in -l/--list-devices command) to your configuration.  
+## Arguments ##
+**-l**  
+**--list-devices**  
+Prints the list of devices on your Pushbullet account  
+[device_id] device_name: device_identity  
 
-`python main.py -p/--print` Prints torrent list.  
+**-a**  
+**--add-device** *device_id*  
+Adds the selected device_id (found in -l/--list-devices command) to your configuration.  
 
-`python main.py -c/--clean` Removes old and seeded torrents and sends Pushbullet notifications.
+**-p**  
+**--print**  
+Prints list of torrents.  
+
+**-c**  
+**--clean**  
+Removes old and seeded torrents and sends Pushbullet notifications.
 
