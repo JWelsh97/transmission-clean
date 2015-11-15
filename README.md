@@ -19,8 +19,12 @@ Prints the list of devices on your Pushbullet account
 
 **-a**  
 **--add-device** *device_id*  
-Adds the selected device_id (found in -l/--list-devices command) to your configuration.  
+Adds the selected device_id (found using -l/--list-devices argument) to your configuration.  
 
+**-r**  
+**--remove-device** *device_id*  
+Removes the selected device_id (found using -l/--list-devices argument) from your configuration.  
+ 
 **-p**  
 **--print**  
 Prints list of torrents.  
