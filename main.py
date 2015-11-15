@@ -30,6 +30,29 @@ def add_device(pb, conf, dev_num):
         config.write_config(conf)
         print('Added %s' % dev_name)
 
+
+def remove_device(pb, conf, dev_num):
+    """
+    Removes a device identity
+    from the config using
+    --remove-device or -r
+    """
+    dev_lst = pb.get_devices()
+    try:
+        dev_name, dev_id = dev_lst[dev_num]
+    except:
+        print('Invalid device')
+        return
+
+    if 'devices' in conf['pushbullet']:
+        try:
+            conf['pushbullet']['devices'].pop(conf['pushbullet']['devices'].index(dev_id))
+        except:
+            print('That device is not in your config')
+            return
+        config.write_config(conf)
+        print('Removed %s' % dev_name)
+
 conf = config.read_config()
 tr = Transmission(**conf['transmission'])
 pb = PushBullet(conf['pushbullet']['access_token'])
@@ -51,6 +74,15 @@ elif '-a' in sys.argv or '--add-device' in sys.argv:
         print('Example: -a/--add-device NUMBER')
         sys.exit()
     add_device(pb, conf, dev_num)
+
+elif '-r' in sys.argv or '--remove-device' in sys.argv:
+    try:
+        dev_num = int(sys.argv[2])
+    except:
+        print('Incorrect usage')
+        print('Example: -r/--remove-device NUMBER')
+        sys.exit()
+    remove_device(pb, conf, dev_num)
 
 elif '-c' in sys.argv or '--clean' in sys.argv:
     complete_torrents = filter(lambda t: tr.old_torrent(t) or tr.seeded_torrent(t),
